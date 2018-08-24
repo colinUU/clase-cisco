@@ -1,0 +1,86 @@
+enable
+config t
+hostname USA
+banner motd &Acceso solo por mi Uriel&
+enable secret class
+line console 0
+password cisco
+login
+exit
+line vty 0 4
+password cisco
+login
+exit
+service password-encryption
+do wr
+####################################################33
+
+interface fastEthernet 6/0
+description WAN TO LAN2 MEX ROUTIN DHCP
+ip address 172.16.4.146 255.255.255.252
+no shutdown 
+
+interface fastEthernet 1/0
+description WAN TO LAN5 MEX 
+ip address 172.16.4.126 255.255.255.240
+no shutdown 
+
+interface serial 2/0
+description WAN TO WAN TO USA
+clock rate 64000
+ip address 172.16.4.137 255.255.255.252
+no shutdown 
+exit
+
+interface serial 2/0
+description WAN TO WAN TO USA
+ip address 172.16.4.142 255.255.255.252
+no shutdown 
+exit
+
+
+
+ip dhcp excluded-address 172.16.4.64 172.16.4.67
+ip dhcp pool LAN1_MEX
+default-router 172.16.4.94
+dns-server 172.16.4.149
+network 172.16.4.64 255.255.255.224
+end
+
+protocolo rip2
+router rip 
+version 2
+network 200.5.16.64
+network 200.5.16.68
+network 200.5.16.76
+network 200.5.16.84
+end
+
+
+protocolo rip2
+router rip 
+version 2
+network 200.5.16.72
+network 200.5.16.52
+network 200.5.16.80
+end
+
+protocolo rip2
+router rip 
+version 2
+network 200.5.16.0
+network 200.5.16.32
+network 200.5.16.48
+end
+
+protocolo rip2
+-----------------------
+router rip 
+version 2
+network 172.16.4.136
+network 172.16.4.32
+network 172.16.4.128
+network 172.16.4.96
+network 172.16.4.64
+
+end

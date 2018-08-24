@@ -1,1 +1,108 @@
-https://ipcisco.com/router-dhcp-configuration-with-packet-tracer/
+-------------------------------------
+CONFIGURACION DE ROUTER
+--------------------------------------
+enable
+erase startup-config 
+reload
+############
+--------------------------------------
+enable
+config t
+//cambiar el nombre del HOst
+hostname RA 
+//ahora viene configurar la seguridad
+
+enable secret class 
+line console 0
+password 'nombre o contraseña'
+login
+exit
+
+line vty 0 4 
+password cisco 
+login
+exit 
+//poner seguridad
+service password encription 
+---------------------------------------------------
+//ahora es momento de configurar las interfaces
+
+interface serial 3/0  (segun sea la interface)
+//ponemos su descripcion 
+description WAN RA TO RC 
+//asignamos la ip 
+ip addres 200.12.12.32 255.255.255.240
+//levantamos el puerto 
+no shoutdown
+exit
+//hacemos que guarde la configuracion 
+copy running-config startup-config 
+//y aceptamos dira OK
+
+
+
+---------------------------------------------------
+LEVANTAR UN PUERTO MAS EN EL ROUTER
+---------------------------------------------------
+interface fastEthernet 0/0
+//colocamos su descripcion
+description LAN TO DNS 
+//asignamos su ip address
+ip address 200.12.12.78 255.255.255.240  *aqui ponemos en gateway o ip segun sea la conección*
+//levantamos el puerto
+no shoutdown
+//salimos
+exit
+//consultamos tablas y guardamos
+show ip route
+copy running-config startup-config 
+--------------------------------------------------------
+SEGUIR LEVANTANDO PUERTO PERO CON LA SINCRONIA DE RELOJ
+--------------------------------------------------------
+//entramos al puerto a configurar
+interface serial 2/0
+//le damos su descripccion 
+description WAN RC TO Rb
+//colocamos la cincronia 
+clock rate 64000
+//asignamos la ip adsress
+ip addres 200.12.12.50 255.255.255.240
+//levantamos el puerto 
+no shutdown
+exit
+//GUardamos cambios *hacerlo una ves que se consulten las tablas de ruteo*
+copy running-config startup-config 
+-------------------------------------------------------
+AGREGAR EL ENRUTAMIENTO ESTATICO
+-------------------------------------------------------
+//entramos a la configuracion
+config t
+//le decimos la ruta que queremos alcanzar
+ip route 200.12.12.0 255.255.255.240 se2/0 *aqui agrgaremos al final el puerto por donde vamos a alcanzar la direccion*
+exit
+--------------------------------------------------------------
+enruta dhcp routin
+//excluimos las ips
+dhcp excluded-address 200.5.16.49 200.5.16.52
+//nombramos el protocolo dhcp
+ip dhcp pool LAN1_QRO
+//colocamos el wateway
+default-router 200.5.16.62
+//colocamos el DNS server ip
+dns-server 200.5.16.73
+//colocamos el segmento que va a atender con el protocolo routing dhcp
+network 200.5.16.32 255.255.255.240
+//finalizamos 
+end
+
+----------------------------------------------
+protocolo rip2
+router rip 
+version 2
+network 200.5.16.80
+network 200.5.16.48
+network 200.5.16.0
+network 200.5.16.84
+end
+
+
