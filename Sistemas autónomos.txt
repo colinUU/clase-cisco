@@ -240,3 +240,151 @@ router eigrp 130
 network 10.10.2.0 0.0.0.3
 redistribute eigrp 120
 exit
+
+-------------------------------------------
+OAX
+
+enable
+configure t
+hostname OAX
+enable secret class
+line console 0
+password cisco
+login
+exit
+line vty 0 4
+password cisco
+login
+exit
+service password-encryption
+do wr
+
+
+interface serial 2/0
+ip address 200.5.18.129 255.255.255.252
+no shutdown 
+do wr
+exit
+
+interface serial 3/0
+ip address 200.5.18.133 255.255.255.252
+no shutdown 
+do wr
+exit
+-------
+interface fastEthernet 0/0
+ip address 200.5.18.126 255.255.255.128
+bandwidth 2048
+no shutdown 
+do wr
+exit
+
+-------------------------------------------------------
+CHI
+
+enable
+configure t
+hostname CHI
+enable secret class
+line console 0
+password cisco
+login
+exit
+line vty 0 4
+password cisco
+login
+exit
+service password-encryption
+do wr
+
+
+interface serial 2/0
+ip address 200.5.18.130 255.255.255.252
+clock rate 64000
+no shutdown 
+do wr
+exit
+
+interface fastEthernet 0/0
+ip address 200.5.15.254 255.255.252.0
+bandwidth 2048
+no shutdown 
+do wr
+exit
+
+interface fastEthernet 1/0
+ip address 200.5.7.254 255.255.248.0
+bandwidth 2048
+no shutdown 
+do wr
+exit
+
+-------------------------------------------------------
+TAB
+
+enable
+configure t
+hostname TAB
+enable secret class
+line console 0
+password cisco
+login
+exit
+line vty 0 4
+password cisco
+login
+exit
+service password-encryption
+do wr
+
+
+interface serial 2/0
+ip address 200.5.18.134 255.255.255.252
+clock rate 64000
+no shutdown 
+do wr
+exit
+
+
+interface fastEthernet 1/0
+ip address 200.5.11.254 255.255.252.0
+bandwidth 2048
+no shutdown 
+do wr
+exit
+
+interface fastEthernet 0/0
+ip address 200.5.17.254 255.255.254.0
+bandwidth 2048
+no shutdown 
+do wr
+exit
+------------------------------------------------------
+
+CHI
+
+config t
+router eigrp 140
+network 200.5.0.0 0.0.7.255
+network 200.5.12.0 0.0.3.255
+network 200.5.18.128 0.0.0.3
+do wr
+exit
+
+OAX
+config t
+router eigrp 140
+network 200.5.18.0 0.0.0.127
+network 200.5.18.128 0.0.0.3
+network 200.5.18.132 0.0.0.3
+do wr
+exit
+
+TAB
+config t
+router eigrp 140
+network 200.5.8.0 0.0.3.255
+network 200.5.16.0 0.0.1.255
+network 200.5.18.132 0.0.0.3
+do wr
+exit
