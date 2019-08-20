@@ -377,6 +377,7 @@ router eigrp 140
 network 200.5.18.0 0.0.0.127
 network 200.5.18.128 0.0.0.3
 network 200.5.18.132 0.0.0.3
+network 10.10.3.0 0.0.0.3
 do wr
 exit
 
@@ -388,3 +389,77 @@ network 200.5.16.0 0.0.1.255
 network 200.5.18.132 0.0.0.3
 do wr
 exit
+
+
+--------------------------------
+OAX
+interface serial 6/0
+ip address 10.10.3.2 255.255.255.252
+clock rate 64000
+no shutdown 
+do wr
+exit
+
+INT
+
+interface serial 6/0
+ip address 10.10.3.1 255.255.255.252
+no shutdown 
+do wr
+exit
+
+router eigrp 140
+network 10.10.3.0 0.0.0.3
+redistribute eigrp 120
+redistribute eigrp 130
+exit
+
+router eigrp 130
+redistribute eigrp 140
+exit
+
+router eigrp 120
+redistribute eigrp 140
+exit
+
+do wr
+
+-------------------------------------
+CHI 
+ip dhcp excluded-address 200.5.12.1 200.5.12.4
+ip dhcp pool DHCP_LAN1_CHI
+default-router 200.5.15.254
+dns-server 172.16.1.1
+network 200.5.12.0 255.255.252.0
+exit
+
+ip dhcp excluded-address 200.5.0.1 200.5.0.4
+ip dhcp pool DHCP_LAN2_CHI
+default-router 200.5.7.254
+dns-server 172.16.1.1
+network 200.5.0.0 255.255.248.0
+exit
+
+OAX
+
+ip dhcp excluded-address 200.5.18.1 200.5.18.4
+ip dhcp pool DHCP_LAN1_OAX
+default-router 200.5.18.126
+dns-server 172.16.1.1
+network 200.5.18.0 255.255.255.128
+
+
+VER
+
+ip dhcp excluded-address 200.5.16.1 200.5.16.4
+ip dhcp pool DHCP_LAN1_VER
+default-router 200.5.17.254
+dns-server 172.16.1.1
+network 200.5.16.0 255.255.254.0
+
+ip dhcp excluded-address 200.5.8.1 200.5.8.4
+ip dhcp pool DHCP_LAN2_VER
+default-router 200.5.11.254
+dns-server 172.16.1.1
+network 200.5.8.0 255.255.252.0
+
