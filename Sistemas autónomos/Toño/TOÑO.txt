@@ -439,6 +439,7 @@ default-router 200.5.7.254
 dns-server 172.16.1.1
 network 200.5.0.0 255.255.248.0
 exit
+do wr
 
 OAX
 
@@ -447,7 +448,8 @@ ip dhcp pool DHCP_LAN1_OAX
 default-router 200.5.18.126
 dns-server 172.16.1.1
 network 200.5.18.0 255.255.255.128
-
+exit
+do wr
 
 VER
 
@@ -456,10 +458,12 @@ ip dhcp pool DHCP_LAN1_VER
 default-router 200.5.17.254
 dns-server 172.16.1.1
 network 200.5.16.0 255.255.254.0
-
+exit
+do wr
 ip dhcp excluded-address 200.5.8.1 200.5.8.4
 ip dhcp pool DHCP_LAN2_VER
 default-router 200.5.11.254
 dns-server 172.16.1.1
 network 200.5.8.0 255.255.252.0
-
+exit
+do wr
